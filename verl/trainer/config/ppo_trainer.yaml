@@ -87,6 +87,7 @@ algorithm:
   # Reinforce_Ada specific
   multiround_adaptive_downsampling: False
   reinforce_ada_choice: "balanced"
+  min_positive_samples: 2
   positive_threshold: 0.7
   max_rounds: 4
   round_repeat: 8

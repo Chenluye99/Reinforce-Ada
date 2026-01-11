@@ -1099,7 +1099,8 @@ class RayPPOTrainer:
                         assert self.config.algorithm.reinforce_ada_choice == "positive_focused", (
                             "reinforce_ada_choice has to be one of {'balanced', 'positive_focused'}"
                         )
-                        target_pos = 1
+                        # Use configurable parameter, default to 2
+                        target_pos = self.config.algorithm.get("min_positive_samples", 2)
                         if len(pos_cache[uid]) >= target_pos:
                             merged = downsample_cache(pos_cache, neg_cache, uid, final_keep_per_prompt)
                             selected_pool_batches.append(merged)
@@ -1152,11 +1153,9 @@ class RayPPOTrainer:
                         f"{final_keep_per_prompt}, but continuing"
                     )
 
-                if self.config.algorithm.reinforce_ada_choice == "positive_focused":
-                    ratio = (pos_num / n_rows) if n_rows > 0 else 0.0
-                    target_pos = math.ceil(ratio * final_keep_per_prompt)
-                    target_pos = max(min(target_pos, take - 1), 1)
-                    target_neg = take - target_pos
+                # For both modes, try to maintain 50:50 balance in fallback
+                target_pos = final_keep_per_prompt // 2
+                target_neg = take - target_pos
 
                 actual_pos = min(pos_num, target_pos)
                 actual_neg = min(neg_num, target_neg)
