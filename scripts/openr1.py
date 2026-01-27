@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    data_source = 'RLHFlow/reinforce_ada_simple_prompt_1-5b'
+    data_source = 'RLHFlow/reinforce_ada_easy_prompt'
     print(f"Loading the {data_source} dataset from huggingface...", flush=True)
     dataset = datasets.load_dataset(data_source, trust_remote_code=True)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path, trust_remote_code=True)
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     print(train_dataset[0])
     local_dir = args.local_dir
     hdfs_dir = args.hdfs_dir
-    train_dataset.to_parquet(os.path.join(local_dir, 'train_15b.parquet'))
+    train_dataset.to_parquet(os.path.join(local_dir, 'train_7b.parquet'))
 
     if hdfs_dir is not None:
         makedirs(hdfs_dir)

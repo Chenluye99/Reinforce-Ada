@@ -9,8 +9,8 @@ export RAY_TMPDIR=/opt/dlami/nvme/ray_tmp
 
 
 # Model
-model_name_or_path=Qwen/Qwen2.5-Math-1.5B
-model_name=Qwen2.5-Math-1.5B
+model_name_or_path=Qwen/Qwen2.5-Math-7B
+model_name=Qwen2.5-Math-7B
 
 # Wandb setting
 project_name=Reinforce-Ada
@@ -42,7 +42,7 @@ val_top_p=1.0
 
 # Algorithm setting
 adv_estimator=grpo
-n=8
+n=4
 kl_coef=0.0
 use_kl_in_reward=False
 use_kl_loss=False
@@ -53,12 +53,12 @@ clip_ratio_high=0.28
 ## Reinforce-Ada setting
 multiround_adaptive_downsampling=True
 reinforce_ada_choice="positive_focused" # "positive_focused" or "balanced"
-min_positive_samples=4
+min_positive_samples=2
 global_stat_est=True
 norm_adv_by_std_in_grpo=False
 
 # Training data
-train_path=/home/chenluy/Reinforce-Ada/data/openr1/train_15b.parquet
+train_path=/home/chenluy/Reinforce-Ada/data/openr1/train_7b.parquet
 test_path=/home/chenluy/Reinforce-Ada/data/test/test.parquet
 train_files="['$train_path']"
 test_files="['$test_path']"
@@ -146,6 +146,6 @@ python3 -m verl.trainer.main_ppo \
     trainer.test_freq=50 \
     trainer.save_freq=50 \
     trainer.total_epochs=1000 \
-    trainer.total_training_steps=600 \
+    trainer.total_training_steps=500 \
     trainer.default_local_dir=${ckpts_dir} \
     trainer.log_val_generations=10 2>&1 | tee ${ckpts_dir}/logs/log                                                                  
